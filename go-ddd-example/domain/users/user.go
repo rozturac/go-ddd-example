@@ -2,10 +2,11 @@ package users
 
 import (
 	"go-ddd-example/domain/common"
+	"go.mongodb.org/mongo-driver/bson/primitive"
 )
 
 type User struct {
-	Id                string             `json:"id"`
+	Id                primitive.ObjectID `json:"id" bson:"_id"`
 	FirstName         string             `json:"first_name"`
 	LastName          string             `json:"last_name"`
 	UserName          string             `json:"user_name"`
@@ -17,11 +18,12 @@ func NewUser(firstName, lastName, username, password string) *User {
 
 	var user *User
 
-	if len(username) == 0 {
+	if common.IsNullOrEmpty(username) {
 		panic(common.IsNullOrEmptyError("username"))
 	}
 
 	user = &User{
+		Id:                primitive.NewObjectID(),
 		FirstName:         firstName,
 		LastName:          lastName,
 		UserName:          username,

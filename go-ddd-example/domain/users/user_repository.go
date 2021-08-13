@@ -1,7 +1,13 @@
 package users
 
+import (
+	"context"
+	"go.mongodb.org/mongo-driver/bson/primitive"
+)
+
 type UserRepository interface {
-	FindOne(id string) (*User, error)
-	Add(user *User) error
-	Update(user *User) error
+	FindOneById(ctx context.Context, id primitive.ObjectID) (*User, error)
+	FindOneByUsername(ctx context.Context, username string) (*User, error)
+	Add(ctx context.Context, user *User) error
+	Update(ctx context.Context, user *User) error
 }
