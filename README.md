@@ -3,12 +3,16 @@
 
 ## Design
 
+* Api
+    * Implements restful service using echo framework
+    * Implementation config file that has environment
 * Domain
     * Define aggregate
         * Entity, Value Object, Enumerations
     * Define interface
-        * repository interface for infrastructure
+        * Repository interface for infrastructure
 * Application
     * Write business logic
 * Infrastructure
     * Implements repository interface
+    * Implements dependency injections
