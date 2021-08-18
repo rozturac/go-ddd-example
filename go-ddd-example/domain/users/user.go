@@ -2,16 +2,28 @@ package users
 
 import (
 	"go-ddd-example/domain/common"
+	"go-ddd-example/domain/users/events"
 	"go.mongodb.org/mongo-driver/bson/primitive"
 )
 
 type User struct {
-	Id                primitive.ObjectID `json:"id" bson:"_id"`
-	FirstName         string             `json:"first_name"`
-	LastName          string             `json:"last_name"`
-	UserName          string             `json:"user_name"`
-	EncryptedPassword *EncryptedPassword `json:"encrypted_password"`
-	Roles             []*UserRole        `json:"roles"`
+	Id                primitive.ObjectID  `json:"id" bson:"_id"`
+	FirstName         string              `json:"first_name"`
+	LastName          string              `json:"last_name"`
+	UserName          string              `json:"user_name"`
+	EncryptedPassword *EncryptedPassword  `json:"encrypted_password"`
+	Roles             []*UserRole         `json:"roles"`
+	DomainEvents      []common.IBaseEvent `json:"domain_events"`
+}
+
+func (u *User) AddEvent(event common.IBaseEvent) {
+	u.DomainEvents = append(u.DomainEvents, event)
+}
+
+func (u *User) RaiseEvents(handler common.IEventHandler) {
+	for _, event := range u.DomainEvents {
+		handler.Handle(event)
+	}
 }
 
 func NewUser(firstName, lastName, username, password string) *User {
@@ -29,6 +41,13 @@ func NewUser(firstName, lastName, username, password string) *User {
 		UserName:          username,
 		EncryptedPassword: NewEncryptedPassword(password),
 	}
+
+	user.AddEvent(&events.UserCreated{
+		Id:        user.Id,
+		FirstName: firstName,
+		LastName:  lastName,
+		UserName:  username,
+	})
 
 	return user
 }

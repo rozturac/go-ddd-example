@@ -2,6 +2,7 @@ package users
 
 import (
 	"context"
+	"go-ddd-example/domain/common"
 	"go-ddd-example/domain/users"
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/bson/primitive"
@@ -12,11 +13,12 @@ import (
 const _collectionName = "Users"
 
 type userRepository struct {
-	db *mongo.Database
+	db           *mongo.Database
+	eventHandler common.IEventHandler
 }
 
-func NewUserRepository(db *mongo.Database) users.UserRepository {
-	return &userRepository{db: db}
+func newUserRepository(db *mongo.Database, eventHandler common.IEventHandler) users.IUserRepository {
+	return &userRepository{db: db, eventHandler: eventHandler}
 }
 
 func (repository userRepository) FindOneById(ctx context.Context, id primitive.ObjectID) (*users.User, error) {
@@ -33,6 +35,9 @@ func (repository userRepository) FindOneByUsername(ctx context.Context, username
 
 func (repository userRepository) Add(ctx context.Context, user *users.User) error {
 	_, err := repository.db.Collection(_collectionName).InsertOne(ctx, &user, options.InsertOne())
+	if err == nil {
+		user.RaiseEvents(repository.eventHandler)
+	}
 	return err
 }
 

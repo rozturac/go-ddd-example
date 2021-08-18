@@ -6,8 +6,9 @@ import (
 )
 
 type Config struct {
-	User User
-	Host Host
+	User        User
+	Host        Host
+	BusSettings BusSettings
 }
 
 type User struct {
@@ -17,6 +18,13 @@ type User struct {
 
 type Host struct {
 	Port int
+}
+
+type BusSettings struct {
+	HostAddress    string
+	Username       string
+	Password       string
+	ClusterMembers []string
 }
 
 func LoadConfig(path, env string) (config Config, err error) {

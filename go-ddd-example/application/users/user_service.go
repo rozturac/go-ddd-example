@@ -16,11 +16,11 @@ type (
 		AuthUser(ctx context.Context, username, password string) (bool, error)
 	}
 	userService struct {
-		Repository users.UserRepository
+		Repository users.IUserRepository
 	}
 )
 
-func NewUserService(repository users.UserRepository) UserService {
+func NewUserService(repository users.IUserRepository) UserService {
 	return &userService{Repository: repository}
 }
 
