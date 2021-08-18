@@ -8,7 +8,7 @@
     * Implementation config file that has environment
 * Domain
     * Define aggregate
-        * Entity, Value Object, Enumerations
+        * Entity, Value Object, Enumerations, DomainEvent
     * Define interface
         * Repository interface for infrastructure
 * Application
