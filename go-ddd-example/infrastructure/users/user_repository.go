@@ -35,13 +35,20 @@ func (repository userRepository) FindOneByUsername(ctx context.Context, username
 
 func (repository userRepository) Add(ctx context.Context, user *users.User) error {
 	_, err := repository.db.Collection(_collectionName).InsertOne(ctx, &user, options.InsertOne())
+
 	if err == nil {
 		user.RaiseEvents(repository.eventHandler)
 	}
+
 	return err
 }
 
 func (repository userRepository) Update(ctx context.Context, user *users.User) error {
 	_, err := repository.db.Collection(_collectionName).ReplaceOne(ctx, bson.M{"_id": user.Id}, &user)
+
+	if err == nil {
+		user.RaiseEvents(repository.eventHandler)
+	}
+
 	return err
 }
