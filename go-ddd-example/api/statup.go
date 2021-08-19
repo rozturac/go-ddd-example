@@ -5,7 +5,7 @@ import (
 	"github.com/labstack/echo/v4"
 	"github.com/labstack/echo/v4/middleware"
 	"go-ddd-example/api/configs"
-	controllers_v1 "go-ddd-example/api/controllers/v1"
+	"go-ddd-example/api/controllers/v1"
 	infUsers "go-ddd-example/infrastructure/users"
 	"net/http"
 	"os"
