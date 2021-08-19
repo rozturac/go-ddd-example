@@ -22,7 +22,7 @@ func (u *User) AddEvent(event common.IBaseEvent) {
 
 func (u *User) RaiseEvents(handler common.IEventHandler) {
 	for _, event := range u.DomainEvents {
-		handler.Handle(event)
+		go handler.Handle(event)
 	}
 }
 
