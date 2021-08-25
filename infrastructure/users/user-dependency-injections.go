@@ -9,7 +9,9 @@ import (
 )
 
 func NewUserRepositoryResolve(config configs.Config) domainUsers.IUserRepository {
-	return newUserRepository(persistence.NewMongoDb(config.User.MongoDb, config.User.Database), common_di.NewEventHandlerResolve())
+	rbt := common_di.NewRabbitMQResolve(config)
+	eventHandler := common_di.NewEventHandlerResolve(rbt)
+	return newUserRepository(persistence.NewMongoDb(config.User.MongoDb, config.User.Database), eventHandler)
 }
 
 func NewUserServiceResolve(config configs.Config) appUsers.UserService {

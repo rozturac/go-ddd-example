@@ -3,12 +3,13 @@ package configs
 import (
 	"fmt"
 	"github.com/spf13/viper"
+	"time"
 )
 
 type Config struct {
-	User        User
-	Host        Host
-	BusSettings BusSettings
+	User     User
+	Host     Host
+	RabbitMQ RabbitMQ
 }
 
 type User struct {
@@ -20,11 +21,17 @@ type Host struct {
 	Port int
 }
 
-type BusSettings struct {
-	HostAddress    string
+type RabbitMQ struct {
+	Host           string
+	Port           string
+	VHost          string
 	Username       string
 	Password       string
-	ClusterMembers []string
+	ConnectionName string
+	Reconnect      struct {
+		MaxAttempt int
+		Interval   time.Duration
+	}
 }
 
 func LoadConfig(path, env string) (config Config, err error) {

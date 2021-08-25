@@ -6,6 +6,8 @@ import (
 	"github.com/labstack/echo/v4/middleware"
 	"go-ddd-example/api/configs"
 	"go-ddd-example/api/controllers/v1"
+	"go-ddd-example/application/users/consumers"
+	common_di "go-ddd-example/infrastructure/common"
 	infUsers "go-ddd-example/infrastructure/users"
 	"net/http"
 	"os"
@@ -24,6 +26,8 @@ func Init() {
 
 	var userService = infUsers.NewUserServiceResolve(config)
 
+	BindConsumers(config)
+
 	e := echo.New()
 	e.Use(middleware.Recover())
 	e.Use(middleware.Logger())
@@ -37,9 +41,14 @@ func Init() {
 	}))
 
 	v1 := e.Group("/api/v1")
-
 	controllers_v1.CreateGuestUser(v1, userService)
 	controllers_v1.GetUserByObjectId(v1, userService)
 
 	e.Start(":8080")
+}
+
+func BindConsumers(config configs.Config) {
+	rbt := common_di.NewRabbitMQResolve(config)
+	rbt.BindConsumer(consumers.NewUserCreatedConsumer())
+	rbt.Start()
 }
