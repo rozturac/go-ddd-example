@@ -7,9 +7,10 @@ import (
 )
 
 type Config struct {
-	User     User
-	Host     Host
-	RabbitMQ RabbitMQ
+	ApplicationName string
+	User            User
+	Host            Host
+	RabbitMQ        RabbitMQ
 }
 
 type User struct {

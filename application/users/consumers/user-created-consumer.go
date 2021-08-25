@@ -3,6 +3,7 @@ package consumers
 import (
 	"fmt"
 	"github.com/rozturac/rmqc"
+	"go-ddd-example/api/consts"
 	"go-ddd-example/domain/users/events"
 )
 
@@ -14,9 +15,9 @@ func NewUserCreatedConsumer() *UserCreatedConsumer {
 }
 
 func (u UserCreatedConsumer) Configure(builder *rmqc.ConsumerBuilder) {
-	builder.BindQueue("go-ddd-example-user-UserCreated")
-	builder.SubscribeAsTopic("go-ddd-example-user", "UserCreated")
-	builder.SetConsumerName("UserCreated")
+	builder.BindQueue(fmt.Sprintf("%s-%s", consts.AppName, "UserCreated"))
+	builder.SubscribeAsTopic(consts.AppName, "UserCreated")
+	builder.SetConsumerName(fmt.Sprintf("%s-%s", consts.AppName, "UserCreated"))
 	builder.SetPrefetchCount(3)
 	builder.SetConsumerCount(3)
 }

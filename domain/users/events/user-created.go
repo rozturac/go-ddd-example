@@ -10,7 +10,3 @@ type UserCreated struct {
 	LastName  string             `json:"last_name"`
 	UserName  string             `json:"user_name"`
 }
-
-func (u UserCreated) GetAggregateName() string {
-	return "user"
-}
