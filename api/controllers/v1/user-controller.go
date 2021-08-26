@@ -12,7 +12,7 @@ import (
 const _prefix = "/users"
 
 func CreateGuestUser(group *echo.Group, userService users.UserService) {
-	path := fmt.Sprintf("%s/CreateGuestUser", _prefix)
+	path := fmt.Sprintf("%s/GuestUser", _prefix)
 	group.POST(path, func(context echo.Context) error {
 
 		var (
