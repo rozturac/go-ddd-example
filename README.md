@@ -16,3 +16,5 @@
 * Infrastructure
     * Implements repository interface
     * Implements dependency injections
+    * Implements event dispatcher
+    * Implements rmqc framework to work with rabbitmq
