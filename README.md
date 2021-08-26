@@ -13,6 +13,7 @@
         * Repository interface for infrastructure
 * Application
     * Write business logic
+    * Implements event consumers
 * Infrastructure
     * Implements repository interface
     * Implements dependency injections
