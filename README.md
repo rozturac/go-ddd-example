@@ -7,9 +7,9 @@
     * Implements restful service using echo framework
     * Implementation config file that has environment
 * Domain
-    * Define aggregate
+    * Define Aggregate
         * Entity, Value Object, Enumerations, DomainEvent
-    * Define interface
+    * Define Interface
         * Repository interface for infrastructure
 * Application
     * Write business logic
