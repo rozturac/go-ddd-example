@@ -3,7 +3,7 @@ package consumers
 import (
 	"fmt"
 	"github.com/rozturac/rmqc"
-	"go-ddd-example/api/consts"
+	"go-ddd-example/application/consts"
 	"go-ddd-example/domain/users/events"
 )
 

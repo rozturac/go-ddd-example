@@ -13,17 +13,19 @@ type User struct {
 	UserName          string              `json:"user_name"`
 	EncryptedPassword *EncryptedPassword  `json:"encrypted_password"`
 	Roles             []*UserRole         `json:"roles"`
-	DomainEvents      []common.IBaseEvent `json:"domain_events"`
+	domainEvents      []common.IBaseEvent `json:"domain_events"`
+}
+
+func (u *User) ClearDomainEvents() {
+	u.domainEvents = nil
+}
+
+func (u *User) GetDomainEvents() []common.IBaseEvent {
+	return u.domainEvents
 }
 
 func (u *User) AddEvent(event common.IBaseEvent) {
-	u.DomainEvents = append(u.DomainEvents, event)
-}
-
-func (u *User) RaiseEvents(handler common.IEventHandler) {
-	for _, event := range u.DomainEvents {
-		go handler.Handle(event)
-	}
+	u.domainEvents = append(u.domainEvents, event)
 }
 
 func NewUser(firstName, lastName, username, password string) *User {

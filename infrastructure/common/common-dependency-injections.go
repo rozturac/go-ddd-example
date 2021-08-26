@@ -4,7 +4,7 @@ import (
 	"github.com/rozturac/rmqc"
 	"go-ddd-example/api/configs"
 	"go-ddd-example/domain/common"
-	"go-ddd-example/infrastructure/common/event-handlers"
+	"go-ddd-example/infrastructure/common/event-dispatcher"
 	"sync"
 )
 
@@ -13,8 +13,8 @@ var (
 	rbt  *rmqc.RabbitMQ
 )
 
-func NewEventHandlerResolve(rbt *rmqc.RabbitMQ) common.IEventHandler {
-	return event_handlers.NewRabbitMQEventHandler(rbt)
+func NewEventHandlerResolve(rbt *rmqc.RabbitMQ) common.IEventDispatcher {
+	return event_dispatcher.NewRabbitMQEventDispatcher(rbt)
 }
 
 func NewRabbitMQResolve(config configs.Config) *rmqc.RabbitMQ {
