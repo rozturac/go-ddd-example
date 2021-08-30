@@ -2,6 +2,7 @@ package users
 
 import (
 	"context"
+	"go-ddd-example/application/users/mappers"
 	"go-ddd-example/application/users/models"
 	"go-ddd-example/domain/users"
 	"go.mongodb.org/mongo-driver/bson/primitive"
@@ -9,10 +10,10 @@ import (
 
 type (
 	UserService interface {
-		AddNewUser(ctx context.Context, newUserModel *models.NewUserModel) (*users.User, error)
-		AddNewAdminUser(ctx context.Context, newUserModel *models.NewUserModel) (*users.User, error)
-		AddNewGuestUser(ctx context.Context) (*users.User, error)
-		GetUserById(ctx context.Context, id string) (*users.User, error)
+		AddNewUser(ctx context.Context, newUserModel *models.NewUserModel) (*models.NewUserModel, error)
+		AddNewAdminUser(ctx context.Context, newUserModel *models.NewUserModel) (*models.NewUserModel, error)
+		AddNewGuestUser(ctx context.Context) (*models.NewUserModel, error)
+		GetUserById(ctx context.Context, id string) (*models.NewUserModel, error)
 		AuthUser(ctx context.Context, username, password string) (bool, error)
 	}
 	userService struct {
@@ -24,7 +25,7 @@ func NewUserService(repository users.IUserRepository) UserService {
 	return &userService{Repository: repository}
 }
 
-func (service userService) GetUserById(ctx context.Context, id string) (*users.User, error) {
+func (service userService) GetUserById(ctx context.Context, id string) (*models.NewUserModel, error) {
 
 	var (
 		user     *users.User
@@ -40,10 +41,10 @@ func (service userService) GetUserById(ctx context.Context, id string) (*users.U
 		return nil, err
 	}
 
-	return user, nil
+	return mappers.MapNewUserModel(user), nil
 }
 
-func (service userService) AddNewUser(ctx context.Context, newUserModel *models.NewUserModel) (*users.User, error) {
+func (service userService) AddNewUser(ctx context.Context, newUserModel *models.NewUserModel) (*models.NewUserModel, error) {
 
 	user := users.NewUser(newUserModel.FirstName, newUserModel.LastName, newUserModel.UserName, newUserModel.Password)
 
@@ -51,10 +52,10 @@ func (service userService) AddNewUser(ctx context.Context, newUserModel *models.
 		return nil, err
 	}
 
-	return user, nil
+	return mappers.MapNewUserModel(user), nil
 }
 
-func (service userService) AddNewAdminUser(ctx context.Context, newUserModel *models.NewUserModel) (*users.User, error) {
+func (service userService) AddNewAdminUser(ctx context.Context, newUserModel *models.NewUserModel) (*models.NewUserModel, error) {
 
 	user := users.NewAdminUser(newUserModel.FirstName, newUserModel.LastName, newUserModel.UserName, newUserModel.Password)
 
@@ -62,18 +63,18 @@ func (service userService) AddNewAdminUser(ctx context.Context, newUserModel *mo
 		return nil, err
 	}
 
-	return user, nil
+	return mappers.MapNewUserModel(user), nil
 
 }
 
-func (service userService) AddNewGuestUser(ctx context.Context) (*users.User, error) {
+func (service userService) AddNewGuestUser(ctx context.Context) (*models.NewUserModel, error) {
 	user := users.NewGuestUser()
 
 	if err := service.Repository.Add(ctx, user); err != nil {
 		return nil, err
 	}
 
-	return user, nil
+	return mappers.MapNewUserModel(user), nil
 }
 
 func (service userService) AuthUser(ctx context.Context, username, password string) (bool, error) {

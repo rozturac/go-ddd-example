@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"github.com/labstack/echo/v4"
 	"go-ddd-example/application/users"
-	domainUsers "go-ddd-example/domain/users"
+	"go-ddd-example/application/users/models"
 	"net/http"
 )
 
@@ -16,7 +16,7 @@ func CreateGuestUser(group *echo.Group, userService users.UserService) {
 	group.POST(path, func(context echo.Context) error {
 
 		var (
-			user *domainUsers.User
+			user *models.NewUserModel
 			err  error
 		)
 
@@ -33,7 +33,7 @@ func GetUserByObjectId(group *echo.Group, userService users.UserService) {
 	group.GET(path, func(context echo.Context) error {
 
 		var (
-			user *domainUsers.User
+			user *models.NewUserModel
 			err  error
 		)
 
