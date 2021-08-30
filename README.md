@@ -13,7 +13,7 @@
 ├── domain
 │   └── common
 │   └── users
-└── infrastructure
+├── infrastructure
 │   └── common
 │       └── event-dispatcher
 │       └── persistance
