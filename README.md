@@ -33,18 +33,17 @@ Here is the sample code snippet that forwards the request received by HTTP to th
 func CreateGuestUser(group *echo.Group, userService users.UserService) {
     path := fmt.Sprintf("%s/GuestUser", _prefix)
     group.POST(path, func(context echo.Context) error {
-    
-    var (
-        user *models.NewUserModel
-        err  error
-    )
-    
-    if user, err = userService.AddNewGuestUser(context2.Background()); err != nil {
-        return err
-    }
-    
-    return context.JSON(http.StatusCreated, user)
-})
+        var (
+            user *models.NewUserModel
+            err  error
+        )
+        
+        if user, err = userService.AddNewGuestUser(context2.Background()); err != nil {
+            return err
+        }
+        
+        return context.JSON(http.StatusCreated, user)
+    })
 }
 ```
 
